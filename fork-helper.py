@@ -61,7 +61,7 @@ def process_txs(addr, txs, coin):
 	for tx in valid_txs:
 		for tx_out in tx["out"]:
 			if addr == tx_out["addr"]:
-				valid.append([tx["hash"], "PRIV_KEY_OF" + addr, addr])
+				valid.append([tx["hash"], "PRIV_KEY_OF_" + addr, addr])
 				break
 
 	return valid
