@@ -25,7 +25,8 @@ fork_list = {
 "BPA": { "name": "Bitcoin Pizza", "block": 501888},
 "BTH": { "name": "Bitcoin Hot", "block": 498848 },
 "BTN": { "name": "Bitcoin New", "block": 501000 },
-"BTW": { "name": "Bitcoin World", "block": 499777 }
+"BTW": { "name": "Bitcoin World", "block": 499777 },
+"BTV": { "name": "Bitcoin Vote", "block": 505050 }
 }
 
 def main():
