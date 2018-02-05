@@ -53,7 +53,7 @@ def process_txs(addr, txs, coin):
 	for txid in valid_txs[:]:
 		for tx in txs_before_fork:
 			for input_tx in tx["inputs"]:
-				if input_tx["prev_out"]["tx_index"] == txid["tx_index"]:
+				if input_tx["prev_out"]["tx_index"] == txid["tx_index"] and input_tx["prev_out"]["addr"] == addr:
 					try:
 						valid_txs.remove(txid)
 					except ValueError:
