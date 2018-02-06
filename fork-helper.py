@@ -6,6 +6,7 @@
 
 import urllib2
 import json
+import sys
 
 # Insert your BTC addresses, one per line
 addresses = """
@@ -29,14 +30,23 @@ fork_list = {
 "BTV": { "name": "Bitcoin Vote", "block": 505050 }
 }
 
+desired_forks = {}
+
 def main():
 	addr_list = addresses.strip().split("\n")
+
+	global desired_forks
+	desired_forks = get_desired_forks()
+	if len(desired_forks) == 0:
+		print "Retrieving all forks..."
+		print
+		desired_forks = fork_list
 
 	for addr in addr_list:
 		a = urllib2.urlopen("https://blockchain.info/rawaddr/" + addr).read()
 		txs = json.loads(a)["txs"]
 
-		for coincode, coindata in fork_list.viewitems():
+		for coincode, coindata in desired_forks.viewitems():
 			valid = process_txs(addr, txs, coindata)
 			for value in valid:
 				if not coindata.has_key("commands"):
@@ -68,11 +78,23 @@ def process_txs(addr, txs, coin):
 	return valid
 
 def print_commands():
-	for coincode, coindata in fork_list.viewitems():
+	for coincode, coindata in desired_forks.viewitems():
 		if coindata.has_key("commands"):
 			print coindata["name"] + " (" + coincode + ")"
 			print "\n".join(coindata["commands"])
 			print
 
+def get_cli_args():
+	if len(sys.argv) == 1:
+		print "You can also specify which forks you want. Example: python " + sys.argv[0] + " btv bcx"
+		return None
+
+	return [arg.upper() for arg in sys.argv[1:]]
+
+def get_desired_forks():
+	cli_args = get_cli_args()
+	if cli_args is None:
+		return {}
+	return {k : v for k, v in fork_list.iteritems() if k in cli_args}
 
 main()
