@@ -1,8 +1,8 @@
+#!/usr/bin/env python
+
 # This script is meant to be used with bitcoin_fork_claimer: https://github.com/ymgve/bitcoin_fork_claimer
 # The outputs of this script are the inputs to the other script.
 # Python 2.x is required
-
-#!/usr/bin/env python
 
 import urllib2
 import json
