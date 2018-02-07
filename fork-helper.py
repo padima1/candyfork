@@ -4,9 +4,7 @@
 # The outputs of this script are the inputs to the other script.
 # Python 2.x is required
 
-import urllib2
-import json
-import sys
+import urllib2, import json, import sys
 
 # Insert your BTC addresses, one per line
 addresses = """
@@ -51,7 +49,7 @@ def main():
 			for value in valid:
 				if not coindata.has_key("commands"):
 					coindata["commands"] = []
-				coindata["commands"].append("python claimer.py " + coincode + " " + " ".join(value) + " " + coincode + "_ADDR")
+				coindata["commands"].append(" python claimer.py " + coincode + " " + " ".join(value) + " " + coincode + "_ADDR")
 
 	print_commands()
 
