@@ -4,7 +4,9 @@
 # The outputs of this script are the inputs to the other script.
 # Python 2.x is required
 
-import urllib2, import json, import sys
+import urllib2
+import json
+import sys
 
 # Insert your BTC addresses, one per line
 addresses = """
@@ -25,7 +27,8 @@ fork_list = {
 "BTH": { "name": "Bitcoin Hot", "block": 498848 },
 "BTN": { "name": "Bitcoin New", "block": 501000 },
 "BTW": { "name": "Bitcoin World", "block": 499777 },
-"BTV": { "name": "Bitcoin Vote", "block": 505050 }
+"BTV": { "name": "Bitcoin Vote", "block": 505050 },
+"BTT": { "name": "Bitcoin Top", "block": 501118 }
 }
 
 desired_forks = {}
