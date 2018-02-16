@@ -28,7 +28,9 @@ fork_list = {
 "BTN": { "name": "Bitcoin New", "block": 501000 },
 "BTW": { "name": "Bitcoin World", "block": 499777 },
 "BTV": { "name": "Bitcoin Vote", "block": 505050 },
-"BTT": { "name": "Bitcoin Top", "block": 501118 }
+"BTT": { "name": "Bitcoin Top", "block": 501118 },
+"WBTC": { "name": "World Bitcoin", "block": 503888 },
+"BTSQ": { "name": "Bitcoin Community", "block": 506066 }
 }
 
 desired_forks = {}
