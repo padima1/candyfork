@@ -30,7 +30,8 @@ fork_list = {
 "BTV": { "name": "Bitcoin Vote", "block": 505050 },
 "BTT": { "name": "Bitcoin Top", "block": 501118 },
 "WBTC": { "name": "World Bitcoin", "block": 503888 },
-"BTSQ": { "name": "Bitcoin Community", "block": 506066 }
+"BTSQ": { "name": "Bitcoin Community", "block": 506066 },
+"BBC": { "name": "Big Bitcoin", "block": 508888 }
 }
 
 desired_forks = {}
