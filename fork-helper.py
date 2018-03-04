@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # This script is meant to be used with bitcoin_fork_claimer: https://github.com/ymgve/bitcoin_fork_claimer
-# The outputs of this script are the inputs to the other script.
+# The outputs of this script are the inputs to that script.
 # Python 2.x is required
 
 import urllib2
@@ -35,6 +35,7 @@ fork_list = {
 }
 
 desired_forks = {}
+balance_address = {}
 
 def main():
 	addr_list = addresses.strip().split("\n")
@@ -49,20 +50,28 @@ def main():
 	for addr in addr_list:
 		a = urllib2.urlopen("https://blockchain.info/rawaddr/" + addr).read()
 		txs = json.loads(a)["txs"]
+		balance_address[addr] = {}
 
 		for coincode, coindata in desired_forks.viewitems():
+			balance_address[addr][coincode] = 0
 			valid = process_txs(addr, txs, coindata)
 			for value in valid:
 				if not coindata.has_key("commands"):
 					coindata["commands"] = []
 				coindata["commands"].append(" python claimer.py " + coincode + " " + " ".join(value) + " " + coincode + "_ADDR")
 
-	print_commands()
+				balance_address[addr][coincode] += coindata["balance"]
+
+	if not "-balance" in sys.argv:
+		print_commands()
+	print_balances()
 
 def process_txs(addr, txs, coin):
 	txs_before_fork = [tx for tx in txs if tx.has_key("block_height") and tx["block_height"] <= coin["block"]]
 	valid_txs = txs_before_fork[:]
 	valid = []
+
+	coin["balance"] = 0
 
 	for txid in valid_txs[:]:
 		for tx in txs_before_fork:
@@ -76,6 +85,7 @@ def process_txs(addr, txs, coin):
 	for tx in valid_txs:
 		for tx_out in tx["out"]:
 			if addr == tx_out["addr"]:
+				coin["balance"] += tx_out["value"]
 				valid.append([tx["hash"], "PRIV_KEY_OF_" + addr, addr])
 				break
 
@@ -88,6 +98,19 @@ def print_commands():
 			print "\n".join(coindata["commands"])
 			print
 
+def print_balances():
+	for addr, addrdata in balance_address.viewitems():
+		print addr + ":"
+		for coincode, balance in addrdata.viewitems():
+			if balance > 0:
+				coin = desired_forks[coincode]["name"] + " (" + coincode + ")"
+				coin = coin.ljust(30, " ")
+				balance_fmt = format((balance / 100000000.0), ".8f")
+				print coin + balance_fmt + " BTC"
+
+		print
+
+
 def get_cli_args():
 	if len(sys.argv) == 1:
 		print "You can also specify which forks you want. Example: python " + sys.argv[0] + " btv bcx"
@@ -99,6 +122,6 @@ def get_desired_forks():
 	cli_args = get_cli_args()
 	if cli_args is None:
 		return {}
-	return {k : v for k, v in fork_list.iteritems() if k in cli_args}
+	return { k : v for k, v in fork_list.iteritems() if k in cli_args }
 
 main()
