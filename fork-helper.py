@@ -9,39 +9,11 @@ import json
 import sys
 
 # Insert your BTC addresses, one per line
-# 31wzKmhqoMxJyBEKS2aW1Bo2pDZ1rqZHCU
-# 3HfH1nPhGMVxsHCqRn6kBYcmwHsV637w5u
-# 3NTDmRLk1swGtWUGjKE8kx4FqWfgAfWfuH
-# 39cpwpMwTx7X8E73QGqGtcAv261Hq98WY3
-# 3A4QAGLoVF3msreXwCeGdQt2ToDDcGuGaj
-# 1DEUSksP4HNsUoY4cfdAz1Jo4cY8DaCJP7
-# 1KKCqYEivsWbbYpQA7s5UnmGh17Axud19B
-# 1TyX5jJnRpsVmwsBNXd7b7NwSimZNwSHD
-# 1GqwvkzRTcvFATvz7Fqc3XqYw3nJhKX9W9
-# 1BMWX1E7SWrYDevsgw65va7JZdSkZVCEfx
-# 1ANDScZzok1n4uwEijZyqv6Modow34nHEA
-# 1CrNNkRHMRXZN6ds8uHhQbjwVaMjhBSAih
-# 1K2BEXQsveiyTnwdJKXVGaNrQiBSTZXFQR
-# 1SETS8iADYLsbR88afniZnwkispCsf8aW
-# 31wzKmhqoMxJyBEKS2aW1Bo2pDZ1rqZHCU
-# 3HfH1nPhGMVxsHCqRn6kBYcmwHsV637w5u
-# 3NTDmRLk1swGtWUGjKE8kx4FqWfgAfWfuH
-# 39cpwpMwTx7X8E73QGqGtcAv261Hq98WY3
-# 3A4QAGLoVF3msreXwCeGdQt2ToDDcGuGaj
-# 1DEUSksP4HNsUoY4cfdAz1Jo4cY8DaCJP7
-# 1KKCqYEivsWbbYpQA7s5UnmGh17Axud19B
-# 1TyX5jJnRpsVmwsBNXd7b7NwSimZNwSHD
-# 1GqwvkzRTcvFATvz7Fqc3XqYw3nJhKX9W9
-# 1BMWX1E7SWrYDevsgw65va7JZdSkZVCEfx
-# 1ANDScZzok1n4uwEijZyqv6Modow34nHEA
-# 1CrNNkRHMRXZN6ds8uHhQbjwVaMjhBSAih
-# 1K2BEXQsveiyTnwdJKXVGaNrQiBSTZXFQR
-# 1SETS8iADYLsbR88afniZnwkispCsf8aW
 addresses = """
-12wm7yFEqo78kiUawFUuNkTTzhVLM8zy9v
+15ZvPgCkTrkKsUzw8PaianK6W7sZQhTMK1
+1HTmbaeSZn7faPjxcSeEHJoxgBGMxJYYem
 """
-# 15ZvPgCkTrkKsUzw8PaianK6W7sZQhTMK1
-# 1HTmbaeSZn7faPjxcSeEHJoxgBGMxJYYem
+
 
 # Forks to check. No need to touch, unless you want to add or remove a fork
 fork_list = {
