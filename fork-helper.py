@@ -31,8 +31,7 @@ fork_list = {
 "BTV": { "name": "Bitcoin Vote", "block": 505050 },
 "BTT": { "name": "Bitcoin Top", "block": 501118 },
 "WBTC": { "name": "World Bitcoin", "block": 503888 },
-"BTSQ": { "name": "Bitcoin Community", "block": 506066 },
-"BBC": { "name": "Big Bitcoin", "block": 508888 }
+"BTSQ": { "name": "Bitcoin Community", "block": 506066 }
 }
 
 desired_forks = {}
@@ -48,6 +47,12 @@ def main():
 		print
 		desired_forks = fork_list
 
+	# Add balance entry per fork
+	for coincode, coindata in desired_forks.viewitems():
+		coindata["balances"] = {}
+		for addr in addr_list:
+			coindata["balances"][addr] = 0
+
 	for addr in addr_list:
 		a = urllib2.urlopen("https://blockchain.info/rawaddr/" + addr).read()
 		txs = json.loads(a)["txs"]
@@ -57,23 +62,23 @@ def main():
 			balance_address[addr][coincode] = 0
 			valid = process_txs(addr, txs, coindata)
 
-			balance_address[addr][coincode] = coindata["balance"]
 			for value in valid:
 				if not coindata.has_key("commands"):
 					coindata["commands"] = []
 				coindata["commands"].append(" python claimer.py " + coincode + " " + " ".join(value) + " " + coincode + "_ADDR")
+
+			coindata["total_value"] = sum(coindata["balances"].values())
 
 
 	if not "-balance" in sys.argv:
 		print_commands()
 	print_balances()
 
+
 def process_txs(addr, txs, coin):
 	txs_before_fork = [tx for tx in txs if tx.has_key("block_height") and tx["block_height"] <= coin["block"]]
 	valid_txs = txs_before_fork[:]
 	valid = []
-
-	coin["balance"] = 0
 
 	# Remove spent transactions
 	for txid in valid_txs[:]:
@@ -88,7 +93,7 @@ def process_txs(addr, txs, coin):
 	for tx in valid_txs:
 		for tx_out in tx["out"]:
 			if addr == tx_out["addr"]:
-				coin["balance"] += tx_out["value"]
+				coin["balances"][addr] += tx_out["value"]
 				valid.append([tx["hash"], "PRIV_KEY_OF_" + addr, addr])
 				break
 
@@ -102,16 +107,19 @@ def print_commands():
 			print
 
 def print_balances():
-	for addr, addrdata in balance_address.viewitems():
-		print addr + ":"
-		for coincode, balance in addrdata.viewitems():
-			if balance > 0:
-				coin = desired_forks[coincode]["name"] + " (" + coincode + ")"
-				coin = coin.ljust(30, " ")
-				balance_fmt = format((balance / 100000000.0), ".8f")
-				print coin + balance_fmt + " BTC"
+	decimals = 100000000.0
+	for coincode, coindata in desired_forks.viewitems():
+		if coindata["total_value"] > 0:
+			print
+			coin_fmt = (coindata["name"] + " (" + coincode + ")").ljust(50, " ")
+			total_fmt = format((coindata["total_value"] / decimals), ".8f")
+			print coin_fmt + total_fmt + " BTC"
 
-		print
+			for addr, balance in coindata["balances"].viewitems():
+				if balance > 0:
+					addr_fmt = addr.ljust(50, " ")
+					balance_fmt = format((balance / decimals), ".8f")
+					print addr_fmt + balance_fmt + " BTC "
 
 
 def get_cli_args():
