@@ -9,10 +9,39 @@ import json
 import sys
 
 # Insert your BTC addresses, one per line
+# 31wzKmhqoMxJyBEKS2aW1Bo2pDZ1rqZHCU
+# 3HfH1nPhGMVxsHCqRn6kBYcmwHsV637w5u
+# 3NTDmRLk1swGtWUGjKE8kx4FqWfgAfWfuH
+# 39cpwpMwTx7X8E73QGqGtcAv261Hq98WY3
+# 3A4QAGLoVF3msreXwCeGdQt2ToDDcGuGaj
+# 1DEUSksP4HNsUoY4cfdAz1Jo4cY8DaCJP7
+# 1KKCqYEivsWbbYpQA7s5UnmGh17Axud19B
+# 1TyX5jJnRpsVmwsBNXd7b7NwSimZNwSHD
+# 1GqwvkzRTcvFATvz7Fqc3XqYw3nJhKX9W9
+# 1BMWX1E7SWrYDevsgw65va7JZdSkZVCEfx
+# 1ANDScZzok1n4uwEijZyqv6Modow34nHEA
+# 1CrNNkRHMRXZN6ds8uHhQbjwVaMjhBSAih
+# 1K2BEXQsveiyTnwdJKXVGaNrQiBSTZXFQR
+# 1SETS8iADYLsbR88afniZnwkispCsf8aW
+# 31wzKmhqoMxJyBEKS2aW1Bo2pDZ1rqZHCU
+# 3HfH1nPhGMVxsHCqRn6kBYcmwHsV637w5u
+# 3NTDmRLk1swGtWUGjKE8kx4FqWfgAfWfuH
+# 39cpwpMwTx7X8E73QGqGtcAv261Hq98WY3
+# 3A4QAGLoVF3msreXwCeGdQt2ToDDcGuGaj
+# 1DEUSksP4HNsUoY4cfdAz1Jo4cY8DaCJP7
+# 1KKCqYEivsWbbYpQA7s5UnmGh17Axud19B
+# 1TyX5jJnRpsVmwsBNXd7b7NwSimZNwSHD
+# 1GqwvkzRTcvFATvz7Fqc3XqYw3nJhKX9W9
+# 1BMWX1E7SWrYDevsgw65va7JZdSkZVCEfx
+# 1ANDScZzok1n4uwEijZyqv6Modow34nHEA
+# 1CrNNkRHMRXZN6ds8uHhQbjwVaMjhBSAih
+# 1K2BEXQsveiyTnwdJKXVGaNrQiBSTZXFQR
+# 1SETS8iADYLsbR88afniZnwkispCsf8aW
 addresses = """
-1HTmbaeSZn7faPjxcSeEHJoxgBGMxJYYem
-15ZvPgCkTrkKsUzw8PaianK6W7sZQhTMK1
+12wm7yFEqo78kiUawFUuNkTTzhVLM8zy9v
 """
+# 15ZvPgCkTrkKsUzw8PaianK6W7sZQhTMK1
+# 1HTmbaeSZn7faPjxcSeEHJoxgBGMxJYYem
 
 # Forks to check. No need to touch, unless you want to add or remove a fork
 fork_list = {
@@ -55,12 +84,13 @@ def main():
 		for coincode, coindata in desired_forks.viewitems():
 			balance_address[addr][coincode] = 0
 			valid = process_txs(addr, txs, coindata)
+
+			balance_address[addr][coincode] = coindata["balance"]
 			for value in valid:
 				if not coindata.has_key("commands"):
 					coindata["commands"] = []
 				coindata["commands"].append(" python claimer.py " + coincode + " " + " ".join(value) + " " + coincode + "_ADDR")
 
-				balance_address[addr][coincode] += coindata["balance"]
 
 	if not "-balance" in sys.argv:
 		print_commands()
@@ -73,6 +103,7 @@ def process_txs(addr, txs, coin):
 
 	coin["balance"] = 0
 
+	# Remove spent transactions
 	for txid in valid_txs[:]:
 		for tx in txs_before_fork:
 			for input_tx in tx["inputs"]:
@@ -86,7 +117,7 @@ def process_txs(addr, txs, coin):
 		for tx_out in tx["out"]:
 			if addr == tx_out["addr"]:
 				coin["balance"] += tx_out["value"]
-				valid.append([tx["hash"], "PRIV_KEY_OF_" + addr, addr])
+				valid.append([tx["hash"], "PRIV_KEY_OF_" + addr, addr, str(tx_out["value"])])
 				break
 
 	return valid
