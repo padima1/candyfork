@@ -10,8 +10,8 @@ import sys
 
 # Insert your BTC addresses, one per line
 addresses = """
-15ZvPgCkTrkKsUzw8PaianK6W7sZQhTMK1
-1HTmbaeSZn7faPjxcSeEHJoxgBGMxJYYem
+12wm7yFEqo78kiUawFUuNkTTzhVLM8zy9v
+15USWMmGtSHnnkmcJBrwYrAjtjBg6i4N8w
 """
 
 
@@ -113,13 +113,13 @@ def print_balances():
 			print
 			coin_fmt = (coindata["name"] + " (" + coincode + ")").ljust(50, " ")
 			total_fmt = format((coindata["total_value"] / decimals), ".8f")
-			print coin_fmt + total_fmt + " BTC"
+			print coin_fmt + total_fmt.rjust(15, " ") + " BTC"
 
 			for addr, balance in coindata["balances"].viewitems():
 				if balance > 0:
 					addr_fmt = addr.ljust(50, " ")
 					balance_fmt = format((balance / decimals), ".8f")
-					print addr_fmt + balance_fmt + " BTC "
+					print addr_fmt + balance_fmt.rjust(15, " ") + " BTC "
 
 
 def get_cli_args():
