@@ -36,7 +36,6 @@ fork_list = {
 }
 
 desired_forks = {}
-balance_address = {}
 
 def main():
 	addr_list = addresses.strip().split("\n")
@@ -57,10 +56,8 @@ def main():
 	for addr in addr_list:
 		a = urllib2.urlopen("https://blockchain.info/rawaddr/" + addr).read()
 		txs = json.loads(a)["txs"]
-		balance_address[addr] = {}
 
 		for coincode, coindata in desired_forks.viewitems():
-			balance_address[addr][coincode] = 0
 			valid = process_txs(addr, txs, coindata)
 
 			for value in valid:
