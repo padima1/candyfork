@@ -32,13 +32,15 @@ fork_list = {
 "BTT": { "name": "Bitcoin Top", "block": 501118 },
 "WBTC": { "name": "World Bitcoin", "block": 503888 },
 "BTSQ": { "name": "Bitcoin Community", "block": 506066 },
-"BICC": { "name": "BitClassic Coin", "block": 499888 }
+"BICC": { "name": "BitClassic Coin", "block": 499888 },
+"UBTC": { "name": "United Bitcoin", "block": 498777 }
 }
 
 desired_forks = {}
 
 def main():
 	addr_list = addresses.strip().split("\n")
+	addr_list = [addr.strip() for addr in addr_list]
 
 	global desired_forks
 	desired_forks = get_desired_forks()
