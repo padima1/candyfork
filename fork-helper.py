@@ -33,7 +33,9 @@ fork_list = {
 "WBTC": { "name": "World Bitcoin", "block": 503888 },
 "BTSQ": { "name": "Bitcoin Community", "block": 506066 },
 "BICC": { "name": "BitClassic Coin", "block": 499888 },
-"UBTC": { "name": "United Bitcoin", "block": 498777 }
+"UBTC": { "name": "United Bitcoin", "block": 498777 },
+"BTCP": { "name": "Bitcoin Private", "block": 511346 },
+"LBTC": { "name": "Lightning Bitcoin", "block": 499999 }
 }
 
 desired_forks = {}
