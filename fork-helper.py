@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+!/usr/bin/env python
 
 # This script is meant to be used with bitcoin_fork_claimer: https://github.com/ymgve/bitcoin_fork_claimer
 # The outputs of this script are the inputs to that script.
@@ -10,39 +10,21 @@ import sys
 
 # Insert your BTC addresses, one per line
 addresses = """
-15ZvPgCkTrkKsUzw8PaianK6W7sZQhTMK1
-1HTmbaeSZn7faPjxcSeEHJoxgBGMxJYYem
+12gaEotB5oskg7SeSPtuh7LzLE8o7jzsbg 
 """
 
 
 # Forks to check. No need to touch, unless you want to add or remove a fork
 fork_list = {
-"BCD": { "name": "Bitcoin Diamond", "block": 495866 },
-"SBTC": { "name": "Super Bitcoin", "block": 498888 },
-"BTG": { "name": "Bitcoin Gold", "block": 491407 },
-"B2X": { "name": "Segwit2x", "block": 501451 },
-"BCX": { "name": "BitcoinX", "block": 498888 },
-"BTP": { "name": "BitcoinPay", "block": 499345},
-"BTF": { "name": "Bitcoin Faith", "block": 500000 },
-"BPA": { "name": "Bitcoin Pizza", "block": 501888},
-"BTH": { "name": "Bitcoin Hot", "block": 498848 },
-"BTN": { "name": "Bitcoin New", "block": 501000 },
-"BTW": { "name": "Bitcoin World", "block": 499777 },
-"BTV": { "name": "Bitcoin Vote", "block": 505050 },
-"BTT": { "name": "Bitcoin Top", "block": 501118 },
-"WBTC": { "name": "World Bitcoin", "block": 503888 },
-"BTSQ": { "name": "Bitcoin Community", "block": 506066 },
-"BICC": { "name": "BitClassic Coin", "block": 499888 },
-"UBTC": { "name": "United Bitcoin", "block": 498777 },
-"BTCP": { "name": "Bitcoin Private", "block": 511346 },
-"LBTC": { "name": "Lightning Bitcoin", "block": 499999 }
+"CDY": { "name": "Bitcoin CANDY", "block": 512666 },
+
 }
 
 desired_forks = {}
+balance_address = {}
 
 def main():
 	addr_list = addresses.strip().split("\n")
-	addr_list = [addr.strip() for addr in addr_list]
 
 	global desired_forks
 	desired_forks = get_desired_forks()
@@ -58,10 +40,12 @@ def main():
 			coindata["balances"][addr] = 0
 
 	for addr in addr_list:
-		a = urllib2.urlopen("https://blockchain.info/rawaddr/" + addr).read()
+		a = urllib2.urlopen("https://blockdozer.com/insight/address/" + addr).read()
 		txs = json.loads(a)["txs"]
+		balance_address[addr] = {}
 
 		for coincode, coindata in desired_forks.viewitems():
+			balance_address[addr][coincode] = 0
 			valid = process_txs(addr, txs, coindata)
 
 			for value in valid:
