@@ -40,7 +40,7 @@ def main():
 			coindata["balances"][addr] = 0
 
 	for addr in addr_list:
-		a = urllib2.urlopen("https://blockdozer.com/insight/address/" + addr).read()
+		a = urllib2.urlopen("https://blockexplorer.com/api/addr/" + addr).read()
 		txs = json.loads(a)["txs"]
 		balance_address[addr] = {}
 
